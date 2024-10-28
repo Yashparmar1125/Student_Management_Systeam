@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from users.models import Student,CustomUser,Course,Session_Year,Staff,Subjects,Holidays,Registration,Assignment,Submission,Timetable,Room,Note,Results,Fess,Exam_Schedule
+from users.models import Student,CustomUser,Course,Session_Year,Staff,Subjects,Holidays,Registration,Assignment,Submission,Timetable,Room,Note,Results,Fess,Exam_Schedule,Notification
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,12 +19,15 @@ def HOME(request):
         'timetables': None,
         'subjects': None,
         'results': None,
+        'notifications': None,
     }
 
     try:
         username = request.user.username
         student = Student.objects.get(admin__username=username)
         register = Registration.objects.get(student_id=student)
+        notifications = Notification.objects.all()
+        print(notifications)
 
         # Fetch timetable
         timetable = Timetable.objects.filter(branch=student.course_id, semester=register.semester)[:2]
@@ -41,6 +44,7 @@ def HOME(request):
         context['timetables'] = timetables
         context['subjects'] = subjects
         context['results'] = results
+        context['notifications']= notifications
 
     except Student.DoesNotExist:
         print("Student not found")

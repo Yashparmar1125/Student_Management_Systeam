@@ -31,4 +31,31 @@ The Smart Classroom Management System is a web application designed to facilitat
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Yashparmar1125/SCMS_FINAL.git
+   
+2. Navigate to the project directory:
+   ```bash
+   cd scms
+
+3. Create a Virtual Env:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+ 
+4. Install the required packages::
+   ```bash
+   pip install -r requirements.txt
+
+5. Apply Database Migrations (in case of new database):
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+
+6. Run Devlopment Server:
+   ```bash
+   python manage.py runserver
+   
+
+
+
+

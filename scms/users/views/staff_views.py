@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from users.models import Student,CustomUser,Course,Session_Year,Staff,Subjects,Holidays,Timetable,Room,Registration,Assignment,Submission,Note,Results
+from django.views.decorators.http import require_POST
+from users.models import Student,CustomUser,Course,Session_Year,Staff,Subjects,Holidays,Timetable,Room,Registration,Assignment,Submission,Note,Results,Notification
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
@@ -15,7 +16,11 @@ from django.conf import settings
 
 
 def HOME(request):
-    return render(request,'users/Staff/Home.html')
+    user=request.user.username
+    teacher=Staff.objects.get(admin__username=user)
+    upcoming_classes = Timetable.objects.filter(teacher_id=teacher).order_by('start_time')
+    context={'upcoming_classes':upcoming_classes}
+    return render(request,'users/Staff/Home.html',context)
 
 
 
@@ -286,3 +291,25 @@ def RESULTS_DOWNLOAD(request):
             subject.ese_marks,
         ])
     return response
+
+
+# views.py
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@require_POST  # Ensure this view only handles POST requests
+def reschedule_lesson(request):
+    timetable_id = request.POST.get('timetable_id')
+    new_date = request.POST.get('new_date')
+    new_time = request.POST.get('new_time')
+
+    # Logic to update the lesson in your database
+    # Example: Lesson.objects.filter(id=timetable_id).update(date=new_date, time=new_time)
+
+    # Create a notification
+    notification_message = f'Lesson {timetable_id} rescheduled to {new_date} at {new_time}.'
+    Notification.objects.create(message=notification_message)
+
+    # Redirect or return a response
+    return redirect('dashboard')

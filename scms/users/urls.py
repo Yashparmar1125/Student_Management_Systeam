@@ -108,6 +108,7 @@ path('Teacher/Home/Notes/Uploaded_Notes',staff_views.UPLOADED_NOTES,name='upload
  path('Teacher/Home/Notes/Delete/<str:note_id>',staff_views.UPLOAD_NOTES_DELETE,name='upload_notes_delete'),
  path('Teacher/Home/Results/',staff_views.RESULTS,name='results_teacher'),
 path('Teacher/Home/Results/Download',staff_views.RESULTS_DOWNLOAD,name='results_download_teacher'),
+path('reschedule/', staff_views.reschedule_lesson, name='reschedule_lesson'),
 
 
 
