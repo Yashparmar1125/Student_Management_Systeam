@@ -1,0 +1,93 @@
+{% extends 'users/base3.html' %}
+{% block content%}
+<div class="content container-fluid">
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Uploaded Notes</h3>
+
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Uploaded</a></li>
+
+            </ul>
+    </div>
+
+</div>
+</div>
+
+
+{% include 'users/includes3/messages.html' %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>type</th>
+                                <th>Uploaded_At</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in notes %}
+                               <tr>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.id }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.title }} {{ assignment.assignment.title }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.subject.name }} {{ assignment.assignment.subject_id.name }}
+        </a>
+    </td>
+
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.note_type }} {{ assignment.assignment.points }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+
+                {{ assignment.uploaded_at }}
+
+        </a>
+    </td>
+     <td class="text-right">
+                                        <div class="actions">
+
+                                            <a href="{% url 'upload_notes_delete' assignment.id %}" class="btn btn-sm bg-danger-light">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+</tr>
+
+
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">No Assignments found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

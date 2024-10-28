@@ -1,0 +1,64 @@
+{% extends 'users/base.html' %}
+{% load custom_filters %}
+{% block content %}
+
+<div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Add Timetable</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                           <li class="breadcrumb-item active">Timetable</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-body">
+                           <form method="post" action="{% url 'timetableadd' %}">
+                             {% csrf_token %}
+                              <div class="row">
+                                 <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Select Branch</label>
+                                       <select class="form-control" id="exampleFormControlSelect1" name="branch">
+                                          <option>Select Branch</option>
+                                          {% for i in branches %}
+        <option value="{{ i.short_name }}">{{ i.name }}</option>
+    {% empty %}
+        <option>No branches available</option>
+    {% endfor %}
+                                       </select>
+                                    </div>
+                                 </div>
+                                  <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label>Semester</label>
+          <select class="form-control" name="semester">
+            <option>Select Semester</option>
+            <option value="1">SEM-1</option>
+            <option value="2">SEM-2</option>
+            <option value="3">SEM-3</option>
+            <option value="4">SEM-4</option>
+            <option value="5">SEM-5</option>
+            <option value="6">SEM-6</option>
+            <option value="7">SEM-7</option>
+            <option value="8">SEM-8</option>
+          </select>
+        </div>
+      </div>
+                                 <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+{% endblock %}

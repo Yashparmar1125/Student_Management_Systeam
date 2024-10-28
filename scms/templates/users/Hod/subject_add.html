@@ -1,0 +1,94 @@
+{% extends 'users/base.html' %}
+{% block content %}
+
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    <h3 class="page-title">Add Subject</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="departments.html">Subject</a></li>
+    <li class="breadcrumb-item active">Add Subject</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+     {% include 'users/includes/messages.html' %}
+
+    <div class="row">
+    <div class="col-sm-12">
+    <div class="card">
+    <div class="card-body">
+    <form method="post" action="{% url 'subject_add' %}">
+      {% csrf_token %}
+    <div class="row">
+    <div class="col-12">
+    <h5 class="form-title"><span>Subject Details</span></h5>
+    </div>
+    <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Subject Name</label>
+    <input type="text" class="form-control" name="subject_name">
+    </div>
+    </div>
+      <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Subject Credits</label>
+    <input type="text" class="form-control" name="subject_credits">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Subject ID</label>
+    <input type="text" class="form-control" name="subject_id">
+    </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <label>Teacher</label>
+        <select class="form-control" name="teacher_id">
+          <option>Select Teacher</option>
+          {% for i in teachers %}
+          <option value="{{i.teacher_id}}"> {{i.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label>Branch</label>
+          <select class="form-control" name="branch_id">
+    <option>Select Branch</option>
+    {% for i in branches %}
+        <option value="{{ i.short_name }}">{{ i.name }}</option>
+    {% empty %}
+        <option>No branches available</option>
+    {% endfor %}
+</select>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label>Semester</label>
+          <select class="form-control" name="semester">
+            <option>Select Semester</option>
+            <option>SEM-1</option>
+            <option>SEM-2</option>
+            <option>SEM-3</option>
+            <option>SEM-4</option>
+            <option>SEM-5</option>
+            <option>SEM-6</option>
+            <option>SEM-7</option>
+            <option>SEM-8</option>
+          </select>
+        </div>
+      </div>
+    <div class="col-12">
+    <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

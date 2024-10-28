@@ -1,0 +1,96 @@
+{% extends 'users/base2.html' %}
+{% load custom_filters %}
+{% block content %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Pay Fees</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Pay Fees</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    {% include 'users/includes/messages.html' %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'secured_payments_gateway' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Student Name</label>
+                                    <input type="text" class="form-control" name="student_name" placeholder="Enter your name" value="{{student.admin.first_name}} {{student.admin.last_name}}"readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Student ID</label>
+                                    <input type="text" class="form-control" name="student_id" placeholder="Enter your Student ID" value="{{student.student_id}}"readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Select Semester</label>
+                                    <select class="form-control" name="semester" required>
+                                        <option value="">Select Semester</option>
+                                        <option value="1">Semester-1</option>
+                                        <option value="2">Semester-2</option>
+                                        <option value="3">Semester-3</option>
+                                        <option value="4">Semester-4</option>
+                                        <option value="5">Semester-5</option>
+                                        <option value="6">Semester-6</option>
+                                        <option value="7">Semester-7</option>
+                                        <option value="8">Semester-8</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" class="form-control" name="amount" placeholder="Enter amount" min="0" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Payment Method</label>
+                                    <select class="form-control" name="payment_method" required>
+                                        <option value="">Select Payment Method</option>
+                                        <option value="Credit_Card">Credit Card</option>
+                                        <option value="Debit_Card">Debit Card</option>
+                                        <option value="Paypal">PayPal</option>
+                                        <option value="Bank_Transfer">Bank Transfer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Comments</label>
+                                    <textarea class="form-control" name="comments" placeholder="Any additional notes or comments" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Pay Fees</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

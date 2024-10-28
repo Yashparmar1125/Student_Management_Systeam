@@ -1,0 +1,98 @@
+{% extends 'users/base3.html' %}
+{% load static%}
+{% block content %}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Students</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active">Students</li>
+            </ul>
+        </div>
+        <div class="col-auto text-right float-right ml-auto">
+            <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="search-section mb-3">
+            <form method="GET" action="#"><!-- Update with your view URL -->
+                {% csrf_token %}
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <select name="search_by" class="form-control">
+                            <option value="ID" {% if request.GET.search_by == 'ID' %}selected{% endif %}>ID</option>
+                            <option value="Name"  {% if request.GET.search_by == 'Name' %}selected{% endif %} >Name</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request.GET.search }}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'users/includes/messages.html' %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Branch</th>
+                                <th>DOB</th>
+                                <th>Parent Name</th>
+                                <th>Mobile Number</th>
+                                <th>Address</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in register %}
+                                <tr >
+                                    <td><a href="{% url 'student_profile' student.student_id.student_id %}">{{ student.student_id }}</a></td>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="{% url 'student_profile' student.student_id %}" class="avatar avatar-sm mr-2">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="/{{ student.admin.profile_pic }}"
+                                                     alt="img"
+                                                     onerror="this.onerror=null; this.src='{% static 'assets/img/profiles/Student.png' %}'">
+                                            </a>
+                                            <a href="{% url 'student_profile' student.student_id %}">{{ student.admin.first_name }} {{ student.admin.last_name }}</a>
+                                        </h2>
+                                    </td>
+                                    <td>{{ student.student_id.course_id.short_name }}</td>
+                                    <td>{{ student.student_id.date_of_birth|date:"d M Y" }}</td>
+                                    <td>{{ student.student_id.father_name }}</td>
+                                    <td>{{ student.student_id.mobile_no }}</td>
+                                    <td>{{ student.student_id.present_address }}</td>
+
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">No students found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

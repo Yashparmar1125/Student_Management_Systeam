@@ -1,0 +1,54 @@
+{% extends 'users/base.html' %}
+{% block content %}
+
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    <h3 class="page-title">Add Branch</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="departments.html">Branch</a></li>
+    <li class="breadcrumb-item active">Add Branch</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+     {% include 'users/includes/messages.html' %}
+
+    <div class="row">
+    <div class="col-sm-12">
+    <div class="card">
+    <div class="card-body">
+    <form method="post" action="{% url 'branch_add' %}">
+      {% csrf_token %}
+    <div class="row">
+    <div class="col-12">
+    <h5 class="form-title"><span>Branch Details</span></h5>
+    </div>
+    <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Branch Name</label>
+    <input type="text" class="form-control" name="branch_name">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Branch ID</label>
+    <input type="text" class="form-control" name="branch_id">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Branch Intake</label>
+    <input type="text" class="form-control" name="branch_intake">
+    </div>
+    </div>
+    <div class="col-12">
+    <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

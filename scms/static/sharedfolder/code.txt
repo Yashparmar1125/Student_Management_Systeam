@@ -1,0 +1,58 @@
+#include<stdio.h>
+#define MAXNO 100
+int n, int p[MAXNO+1], int w[MAXNO+1], capacity;
+void read()
+ {
+ int i;
+ 
+ printf("Enter number of objects: ");
+ scanf("%d", &n);
+ printf("Enter capacity of knapsack ");
+ scanf("%d", &capacity);
+ for (i = 1 ; i <= n ; i++)
+ {
+ printf("Enter weight of object %d: ", i);
+ scanf("%d", &w[i]);
+ printf("Enter profit of object %d: ", i);
+ scanf("%d", &p[i]);
+ }
+ }
+ void fill() 
+ {
+ int i, j, tp[MAXNO+1][MAXNO+1];
+ int iout, jout;
+ for (i = 0 ; i <= n ; i++)
+ for (j = 0 ; j <= n ; j++)
+ {
+ tp[i][j] = 0;
+ }
+ for (i = 1 ; i <= n ; i++)
+ {
+ for (j = 1 ; j <= capacity ; j++)
+ {
+ if (j - w[i] >= 0)
+ {
+ if (tp[i-1][j] > p[i] + tp[i-1][j - w[i]]) 
+ {
+ printf("condition 1: "); 
+ tp[i][j] = tp[i-1][j];
+ }
+ else
+ {
+ printf("condition 2: "); 
+ tp[i][j] = p[i] + tp[i-1][j - w[i]];
+ }
+ }
+ else
+ {
+ tp[i][j] = tp[i-1][j];
+ }
+ }
+ }
+ printf("Maximum profit: %d", tp[n][capacity]);
+}
+void main()
+{
+ read();
+ fill();
+}

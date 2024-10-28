@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Error 404</title>
+
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <style>
+    .gif {
+        background-image: url("{% static 'assets/img/something-went-wrong.png' %}");
+        background-size: contain; /* or '100%' */
+        background-position: center;
+        height: 400px; /* Adjust height as needed */
+        width: 100%; /* Ensure it takes full width */
+        margin-bottom: 20px; /* Space between image and text */
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-repeat: no-repeat; /* Prevents the image from repeating */
+    }
+</style>
+</head>
+<body class="error-page">
+
+<div class="main-wrapper">
+
+    <div class="error-box">
+        <div class="gif"></div>
+
+        <h3 class="h2 mb-3"><i class="fas fa-exclamation-triangle"></i> Oops! Something Went Wrong...</h3>
+        <p class="h4 font-weight-normal">Some issues occurred</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Back To Home</a>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+</body>
+</html>

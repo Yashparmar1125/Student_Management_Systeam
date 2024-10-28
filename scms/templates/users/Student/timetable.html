@@ -1,0 +1,84 @@
+{% extends 'users/base2.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row">
+                     <div class="col">
+                        <h3 class="page-title">TimeTable</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="index.html">Timetable</a></li>
+                           <li class="breadcrumb-item active">{{short_name}}</li>
+                            <li class="breadcrumb-item active">{{semester}}</li>
+                        </ul>
+                     </div>
+                  </div>
+                   {% include 'users/includes2/messages.html' %}
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title mb-2">Timetable</h5>
+
+
+<!--                          <div class="dropdown">-->
+<!--                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false"> DAY </a>-->
+<!--                            <div class="dropdown-menu">-->
+<!--                                <a class="dropdown-item" href="{% url 'timetablefilter' %}?branch={{short_name}}&sem={{semester}}">All Days</a>-->
+<!--                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=mon&branch={{short_name}}&sem={{semester}}">Monday</a>-->
+<!--                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=tue&branch={{short_name}}&sem={{semester}}">Tuesday</a>-->
+<!--                              <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=wed&branch={{short_name}}&sem={{semester}}">Wednesday</a>-->
+<!--                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=thu&branch={{short_name}}&sem={{semester}}">Thursday</a>-->
+<!--                              <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=fri&branch={{short_name}}&sem={{semester}}">Friday</a>-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="datatable table table-stripped">
+                                 <thead>
+                                    <tr>
+                                       <th>Time</th>
+                                       <th>Subject</th>
+                                       <th>Teacher</th>
+                                       <th>Lab/Theory</th>
+                                       <th>Room</th>
+                                       <th>Day</th>
+                                    </tr>
+                                 </thead>
+
+                                 <tbody>
+    {% for i in timetable %}
+    <tr style="background-color: {% if forloop.counter|divisibleby:4 %} #ffcccc {% elif forloop.counter|divisibleby:4|add:1 %} #ccffcc {% elif forloop.counter|divisibleby:4|add:2 %} #ccccff {% elif forloop.counter|divisibleby:4|add:3 %} #ffffcc {% endif %};">
+        <td>{{ i.start_time }} - {{ i.end_time }}</td>
+        <td>{{ i.subject_name }}</td>
+        <td>{{ i.teacher_id }}</td>
+        <td>{{ i.get_lab_or_theory_display }}</td>
+        <td>{{ i.room_no }}</td>
+        <td>{{ i.get_day_display }}</td>
+
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">No Timetable Found</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Fees</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Fees</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                <a href="add-fees.html" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                                <tr>
+                                    <th>Fee ID</th>
+
+                                    <th>Student Name</th>
+                                    <th>Semester</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Mode of Payment</th>
+                                    <th>Paid At</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fee in fees %}
+                                <tr data-toggle="modal" data-target="#feeModal" data-fee-id="{{ fee.fee_id }}"
+                                    data-transaction-id="{{ fee.transaction_id }}"
+                                    data-student-name="{{ fee.student.admin.first_name }} {{ fee.student.admin.last_name }}"
+                                    data-semester="{{ fee.semester }}"
+                                    data-description="{{ fee.description }}"
+                                    data-amount="{{ fee.amount|floatformat:2 }}"
+                                    data-mode="{{ fee.mode }}"
+                                    data-paid-at="{{ fee.paid_at|date:'d M Y H:i' }}">
+                                    <td>FESX-{{ fee.fee_id }}</td>
+
+                                    <td>{{ fee.student.admin.first_name }} {{ fee.student.admin.last_name }}</td>
+                                    <td>{{ fee.semester }}</td>
+                                    <td>{{ fee.description }}</td>
+                                    <td>₹{{ fee.amount|floatformat:2 }}</td>
+                                    <td>{{ fee.mode }}</td>
+                                    <td>{{ fee.paid_at|date:"d M Y H:i" }}</td>
+
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No fees available.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="feeModal" tabindex="-1" role="dialog" aria-labelledby="feeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feeModalLabel">Fee Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Fee ID:</strong> <span id="modal-fee-id"></span></p>
+                <p><strong>Transaction ID:</strong> <span id="modal-transaction-id"></span></p>
+                <p><strong>Student Name:</strong> <span id="modal-student-name"></span></p>
+                <p><strong>Semester:</strong> <span id="modal-semester"></span></p>
+                <p><strong>Description:</strong> <span id="modal-description"></span></p>
+                <p><strong>Amount:</strong> ₹<span id="modal-amount"></span></p>
+                <p><strong>Mode of Payment:</strong> <span id="modal-mode"></span></p>
+                <p><strong>Paid At:</strong> <span id="modal-paid-at"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and jQuery if not already included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // When a row is clicked
+    $('tr[data-toggle="modal"]').on('click', function() {
+        // Get data attributes
+        var feeId = $(this).data('fee-id');
+        var transactionId = $(this).data('transaction-id');
+        var studentName = $(this).data('student-name');
+        var semester = $(this).data('semester');
+        var description = $(this).data('description');
+        var amount = $(this).data('amount');
+        var mode = $(this).data('mode');
+        var paidAt = $(this).data('paid-at');
+
+        // Populate the modal with data
+        $('#modal-fee-id').text(feeId);
+        $('#modal-transaction-id').text(transactionId);
+        $('#modal-student-name').text(studentName);
+        $('#modal-semester').text(semester);
+        $('#modal-description').text(description);
+        $('#modal-amount').text(amount);
+        $('#modal-mode').text(mode);
+        $('#modal-paid-at').text(paidAt);
+    });
+});
+</script>
+{% endblock %}

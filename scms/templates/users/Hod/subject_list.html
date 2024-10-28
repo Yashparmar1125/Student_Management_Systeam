@@ -1,0 +1,107 @@
+{% extends 'users/base.html' %}
+{% block content %}
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Subjects</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Subjects</li>
+            </ul>
+        </div>
+        <div class="col-auto text-right float-right ml-auto">
+            <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+            <a href="{% url 'subject_add' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Subject</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="search-section mb-3">
+            <form method="post" action="{% url 'subject_filter' %}">
+                {% csrf_token %}
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <select name="query1" class="form-control">
+                            <option value="B.Tech Computer Enginerring">CMPN</option>
+                            <option value="B.Tech Electronic And Telecomunication Enginerring">EXTC</option>
+                            <option value="B.Tech Electronics and Computer Science Engineering">EXCS</option>
+                            <option value="B.Tech Biomedical Engineering">BIOM</option>
+                            <option value="B.Tech Information Technology Engineering">INFT</option>
+                            <option value="B.Tech Mechanical Engineering">ME</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select name="query2" class="form-control">
+                            <option value="1">SEM-1</option>
+                            <option value="2">SEM-2</option>
+                            <option value="3">SEM-3</option>
+                            <option value="4">SEM-4</option>
+                            <option value="5">SEM-5</option>
+                            <option value="6">SEM-6</option>
+                            <option value="7">SEM-7</option>
+                            <option value="8">SEM-8</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'users/includes/messages.html' %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Teacher</th>
+                                <th>Branch</th>
+                                <th>Preferred Semester</th>
+<!--                                <th class="text-right">Action</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject in subjects %}
+                                <tr>
+                                    <td>{{ subject.subject_id }}</td>
+                                    <td>{{ subject.name }}</td>
+                                    <td>{{ subject.teacher_id.name }}</td>
+                                    <td>{{ subject.course_id.short_name }}</td>
+                                    <td>{{ subject.semester }}</td>
+<!--                                    <td class="text-right">-->
+<!--                                        <div class="actions">-->
+<!--                                            <a href="{% url 'subject_edit' subject.subject_id %}" class="btn btn-sm bg-success-light mr-2">-->
+<!--                                                <i class="fas fa-pen"></i>-->
+<!--                                            </a>-->
+<!--                                            <a href="#" class="btn btn-sm bg-danger-light"-->
+<!--                                               onclick="return confirm('Are you sure you want to delete this subject? This action cannot be undone.');">-->
+<!--                                                <i class="fas fa-trash"></i>-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">No subjects found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

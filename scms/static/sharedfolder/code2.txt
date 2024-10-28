@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+int n; //number of queens
+int x[MAX] ; //array which stores columns of queens
+void read()
+{
+ printf("Enter number of queens: ");
+ scanf("%d", &n);
+}
+int place(int k , int i)
+{
+ for (int j = 1; j <= k-1; j++)
+ {
+ if (x[j] == i || abs(x[j]-i) == (k-j))
+ {
+ return 0;
+ }
+ }
+ printf("Can be placed\n");
+ return 1;
+}
+void nqueen(int k)
+{
+ for (int i = 1 ; i <= n ; i++)
+ {
+ if (place(k, i))
+ {
+ x[k] = i;
+ if (k==n)
+ {
+ //print solution
+ for (int j = 1 ; j <= n ; j++)
+ printf("%d ", x[j]);
+ printf(" \n");
+ }
+ else
+ nqueen(k+1);
+ }
+ } //end for
+}//end nqueen
+void main()
+{
+ read();
+ nqueen(1);
+ }

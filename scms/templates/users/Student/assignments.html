@@ -1,0 +1,154 @@
+{% extends 'users/base2.html' %}
+{% block content%}
+<div class="content container-fluid">
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Assignments {{type}}</h3>
+
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'assignments_upcomming' %}">Upcomming</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'assignments_past_due' %}">Past Due</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'assignments_submitted' %}">Submitted</a></li>
+            </ul>
+    </div>
+
+</div>
+</div>
+
+
+{% include 'users/includes/messages.html' %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                {% if type != "Upcoming" and type != "Past Due" %}
+                                <th>Returned Points</th>
+                                {% endif %}
+                                <th>Total Points</th>
+                                <th>Submission Date</th>
+                                {% if type == "Upcoming" %}
+                                <th >Hand_In</th>
+                                {% elif type == "Past Due" %}
+                                <th>Hand_In_Late</th>
+                                {% else %}
+                                <th>Undo_Hand_In</th>
+                                {% endif %}
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in assignments %}
+                               <tr>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.id }} {{ assignment.assignment.id }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.title }} {{ assignment.assignment.title }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.subject_id.name }} {{ assignment.assignment.subject_id.name }}
+        </a>
+    </td>
+                                   {% if type != "Upcoming" and type != "Past Due" %}
+
+                                   <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.feedback}}
+        </a>
+    </td>
+                                   {% endif %}
+
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.points }} {{ assignment.assignment.points }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {% if type != "Upcoming" and type != "Past Due" %}
+                {{ assignment.submitted_at }}
+            {% else %}
+                {{ assignment.due_date }}
+            {% endif %}
+        </a>
+    </td>
+    <td>
+        {% if type == "Upcoming" %}
+        <div class="actions">
+            <a href="#" class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#uploadModal" data-assignment-id="{{ assignment.id }}" data-assignment-title="{{ assignment.title }}">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+        </div>
+        {% elif type == "Past Due" %}
+        <div class="actions">
+            <a href="#" class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#uploadModal" data-assignment-id="{{ assignment.id }}" data-assignment-title="{{ assignment.title }}">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+        </div>
+        {% else %}
+        <div class="actions">
+            <a href="{% url 'assignment_undo_upload' %}?assignment_id={{ assignment.assignment.id }}" class="btn btn-sm bg-success-light mr-2">
+                <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+        {% endif %}
+    </td>
+</tr>
+
+
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">No Assignments found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Assignment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{% url 'assignment_upload' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="assignment-id" name="assignment_id">
+                        <div class="form-group">
+                            <label for="file-upload">Upload your work</label>
+                            <input type="file" class="form-control" id="file-upload" name="file" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

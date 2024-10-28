@@ -1,0 +1,190 @@
+{% extends 'users/base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row">
+                     <div class="col">
+                        <h3 class="page-title">TimeTable</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="index.html">Timetable</a></li>
+                           <li class="breadcrumb-item active">{{short_name}}</li>
+                            <li class="breadcrumb-item active">{{semester}}</li>
+                        </ul>
+                     </div>
+                  </div>
+                   {% include 'users/includes/messages.html' %}
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title mb-2">Timetable</h5>
+<button type="button" class="btn btn-rounded btn-primary" id="openModal" style="margin-left: 900px;">Add Schedule</button>
+                            <div id="myModal" class="modals">
+    <div class="modal-contents">
+        <span id="closeModal" style="float:right;cursor:pointer;">&times;</span>
+        <h2>Add Timetable</h2>
+        <form method="post" action="{% url 'addslot'%}">
+            {% csrf_token %}
+            <div class="form-group">
+          <label>Subject</label>
+          <select class="form-control" name="subject_id">
+            <option>Select Subject</option>
+              {% for i in subjects %}
+            <option value="{{i.subject_id}}">{{i.name}}</option>
+              {% endfor %}
+          </select>
+        </div>
+            <div class="form-group">
+          <label>Day</label>
+          <select class="form-control" name="day">
+            <option>Select Day</option>
+            <option value="mon">Monday</option>
+              <option value="tue">Tuesday</option>
+              <option value="wed">Wednesday</option>
+              <option value="thu">Thursday</option>
+              <option value="fri">Friday</option>
+          </select>
+        </div>
+            <div class="form-group">
+                <label for="scheduleDate">Start Time</label>
+                <input type="time" class="form-control" id="scheduleDate" name="start_time" required>
+            </div>
+            <div class="form-group" hidden>
+                <label for="scheduleDate">Start Time</label>
+                <input type="text" class="form-control"  name="branch" value="{{short_name}}" required>
+            </div>
+            <div class="form-group" hidden>
+                <label for="scheduleDate">Start Time</label>
+                <input type="text" class="form-control"  name="semester" value="{{semester}}" required>
+            </div>
+            <div class="form-group">
+          <label>Teacher</label>
+          <select class="form-control" name="teacher_id">
+            <option>Select Teacher</option>
+              {% for i in subjects %}
+            <option value="{{i.teacher_id.teacher_id}}">{{i.teacher_id}}</option>
+              {% endfor %}
+          </select>
+        </div>
+            <div class="form-group">
+          <label>Class</label>
+          <select class="form-control" name="room_number">
+            <option>Select Class</option>
+              {% for i in rooms %}
+            <option value="{{i.room_number}}">{{i.room_number}}</option>
+              {% endfor %}
+          </select>
+        </div>
+            <div class="form-group">
+          <label>Lab/Theory</label>
+          <select class="form-control" name="lab_theory">
+            <option>Select</option>
+            <option value="lab">Lab</option>
+              <option value="theory">Theory</option>
+          </select>
+        </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+                          <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false"> DAY </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'timetablefilter' %}?branch={{short_name}}&sem={{semester}}">All Days</a>
+                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=mon&branch={{short_name}}&sem={{semester}}">Monday</a>
+                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=tue&branch={{short_name}}&sem={{semester}}">Tuesday</a>
+                              <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=wed&branch={{short_name}}&sem={{semester}}">Wednesday</a>
+                            <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=thu&branch={{short_name}}&sem={{semester}}">Thursday</a>
+                              <a class="dropdown-item" href="{% url 'timetablefilter' %}?day=fri&branch={{short_name}}&sem={{semester}}">Friday</a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="datatable table table-stripped">
+                                 <thead>
+                                    <tr>
+                                       <th>Time</th>
+                                       <th>Subject</th>
+                                       <th>Teacher</th>
+                                       <th>Lab/Theory</th>
+                                       <th>Room</th>
+                                       <th>Day</th>
+                                    </tr>
+                                 </thead>
+
+                                 <tbody>
+    {% for i in timetable %}
+    <tr style="background-color: {% if forloop.counter|divisibleby:4 %} #ffcccc {% elif forloop.counter|divisibleby:4|add:1 %} #ccffcc {% elif forloop.counter|divisibleby:4|add:2 %} #ccccff {% elif forloop.counter|divisibleby:4|add:3 %} #ffffcc {% endif %};">
+        <td>{{ i.start_time }} - {{ i.end_time }}</td>
+        <td>{{ i.subject_name }}</td>
+        <td>{{ i.teacher_id }}</td>
+        <td>{{ i.get_lab_or_theory_display }}</td>
+        <td>{{ i.room_no }}</td>
+        <td>{{ i.get_day_display }}</td>
+        <td class="text-right">
+            <div class="actions">
+                <a href="#" class="btn btn-sm bg-success-light mr-2">
+                    <i class="fas fa-pen"></i>
+                </a>
+                <a href="{% url 'timetabledelete' i.timetable_id %}"
+   class="btn btn-sm bg-danger-light"
+   onclick="return confirm('Are you sure you want to delete this timetable? This action cannot be undone.');">
+    <i class="fas fa-trash"></i>
+</a>
+            </div>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">No Timetable Found</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+<script>
+    // Get modal element
+    var modal = document.getElementById("myModal");
+
+    // Get button that opens the modal
+    var btn = document.getElementById("openModal");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closeModal");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+
+{% endblock %}

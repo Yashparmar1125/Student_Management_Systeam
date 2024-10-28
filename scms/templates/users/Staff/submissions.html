@@ -1,0 +1,125 @@
+{% extends 'users/base3.html' %}
+{% block content%}
+<div class="content container-fluid">
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Submissions {{type}}</h3>
+
+<!--            <ul class="breadcrumb">-->
+<!--                <li class="breadcrumb-item"><a href="{% url 'assignments_upcomming' %}">Upcomming</a></li>-->
+<!--                <li class="breadcrumb-item"><a href="{% url 'assignments_past_due' %}">Past Due</a></li>-->
+<!--                <li class="breadcrumb-item"><a href="{% url 'assignments_submitted' %}">Submitted</a></li>-->
+<!--            </ul>-->
+    </div>
+
+</div>
+</div>
+
+
+{% include 'users/includes3/messages.html' %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Submission_Date</th>
+                                <th>Due Date</th>
+                                <th>Assigned points</th>
+                                <th>Total Points</th>
+                                <th class="text-right">Return</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in submissions %}
+                               <tr>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.assignment.title }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+             {{ assignment.student.admin.first_name }} {{ assignment.student.admin.last_name }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.submitted_at }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.assignment.due_date }}
+        </a>
+    </td>
+                                   <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.feedback }}
+        </a>
+    </td>
+    <td>
+        <a href="{{ assignment.file.url }}" style="display: block; text-decoration: none; color: inherit;">
+            {{ assignment.assignment.points }}
+        </a>
+    </td>
+    <td>
+        <div class="actions">
+            <a href="#" class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#uploadModal" data-assignment-id="{{ assignment.id}}" data-assignment-title="{{ assignment.title }}">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+        </div>
+
+    </td>
+</tr>
+
+
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">No Submissions found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Return Assignment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{% url 'assignment_submission' %}" >
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="assignment-id" name="submission_id">
+                        <div class="form-group">
+                            <label for="file-upload">Assign Points</label>
+                            <input type="text" class="form-control" id="file-upload" name="points" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Return</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

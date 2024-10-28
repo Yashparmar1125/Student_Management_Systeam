@@ -1,0 +1,58 @@
+{% extends 'users/base3.html' %}
+{% block content %}
+
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    <h3 class="page-title">Upload Notes</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Notes</a></li>
+    <li class="breadcrumb-item active">Upload Notes</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+     {% include 'users/includes3/messages.html' %}
+
+    <div class="row">
+    <div class="col-sm-12">
+    <div class="card">
+    <div class="card-body">
+    <form method="post" action="{% url 'upload_notes' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+    <div class="row">
+    <div class="col-12">
+    <h5 class="form-title"><span>Notes Details</span></h5>
+    </div>
+    <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Title</label>
+    <input type="text" class="form-control" name="title">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>File</label>
+    <input type="file" class="form-control" name="file">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Type of Note</label>
+                                       <select class="form-control" id="exampleFormControlSelect1" name="type">
+                                          <option>Select Type</option>
+                                          <option value="subject_note">Subject Notes</option>
+                                          <option value="practice_paper">Practice Papers</option>
+                                       </select>
+                                    </div>
+                                 </div>
+    <div class="col-12">
+    <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

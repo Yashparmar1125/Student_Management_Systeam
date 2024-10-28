@@ -1,0 +1,69 @@
+{% extends 'users/base2.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Exam Schedule</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Exam Schedule</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                                <tr>
+                                    <th>Exam Name</th>
+                                    <th>Branch</th>
+                                    <th>Subject</th>
+                                    <th>Semester</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>Exam Type</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for exam in exams %}
+                                <tr>
+                                    <td>
+                                        <h2>
+                                            <a>{{ exam.name }}</a>
+                                        </h2>
+                                    </td>
+                                    <td>{{ exam.Branch.name }}</td>
+                                    <td>{{ exam.subject.name }}</td>
+                                    <td>{{ exam.semester }}</td>
+                                    <td>{{ exam.date|date:"d M Y" }}</td>
+                                    <td>{{ exam.start_time|time:"g:i A" }}</td>
+                                    <td>{{ exam.exam_type }}</td>
+
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center">No exams scheduled.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

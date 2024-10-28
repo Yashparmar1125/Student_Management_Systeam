@@ -1,0 +1,168 @@
+{% extends 'users/base3.html' %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Results</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Results</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="{% url 'results_download_teacher' %}" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+            </div>
+        </div>
+    </div>
+
+    {% include 'users/includes3/messages.html' %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0" id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>ISA</th>
+                                    <th>MSE</th>
+                                    <th>ESE</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in context %}
+                                    <tr class="clickable-row" data-id="{{ item.student.student_id }}" data-name="{{ item.student.admin.first_name }} {{ item.student.admin.last_name }}">
+                                        <td>{{ item.student.student_id }}</td>
+                                        <td>{{ item.student.admin.first_name }} {{ item.student.admin.last_name }}</td>
+                                        <td>{{ item.result.isa_marks|default:"N/A" }}</td>
+                                        <td>{{ item.result.mse_marks|default:"N/A" }}</td>
+                                        <td>{{ item.result.ese_marks|default:"N/A" }}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm edit-btn"
+                                                    data-id="{{ item.student.student_id }}"
+                                                    data-name="{{ item.student.admin.first_name }} {{ item.student.admin.last_name }}"
+                                                    data-isa="{{ item.result.isa_marks|default:0 }}"
+                                                    data-mse="{{ item.result.mse_marks|default:0 }}"
+                                                    data-ese="{{ item.result.ese_marks|default:0 }}"
+                                                    data-toggle="modal"
+                                                    data-target="#marksModal">Edit</button>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6">No Students found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Entering Marks -->
+    <div class="modal fade" id="marksModal" tabindex="-1" role="dialog" aria-labelledby="marksModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="marksModalLabel">Enter Marks</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="marksForm" method="post" action="{% url 'results_teacher' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="studentId">Student ID</label>
+                            <input type="text" class="form-control" id="studentId" name="student_id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">Student Name</label>
+                            <input type="text" class="form-control" id="studentName" name="student_name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="isa">ISA</label>
+                            <input type="number" class="form-control" id="isa" name="isa" min="0" max="15" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mse">MSE</label>
+                            <input type="number" class="form-control" id="mse" name="mse" min="0" max="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ese">ESE</label>
+                            <input type="number" class="form-control" id="ese" name="ese" min="0" max="40" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Marks</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tableRows = document.querySelectorAll('.clickable-row');
+        tableRows.forEach(row => {
+            row.addEventListener('click', function() {
+                const studentId = this.getAttribute('data-id');
+                const studentName = this.getAttribute('data-name');
+                const isa = this.querySelector('.edit-btn').getAttribute('data-isa');
+                const mse = this.querySelector('.edit-btn').getAttribute('data-mse');
+                const ese = this.querySelector('.edit-btn').getAttribute('data-ese');
+
+                // Populate the modal fields
+                document.getElementById('studentId').value = studentId;
+                document.getElementById('studentName').value = studentName;
+                document.getElementById('isa').value = isa;
+                document.getElementById('mse').value = mse;
+                document.getElementById('ese').value = ese;
+
+                // Show the modal
+                $('#marksModal').modal('show');
+            });
+        });
+
+        // AJAX handling for form submission
+        document.getElementById('marksForm').addEventListener('submit', function(e) {
+            e.preventDefault();  // Prevent default form submission
+
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Marks saved successfully.');
+                    $('#marksModal').modal('hide'); // Close the modal
+                    location.reload(); // Refresh the page
+                } else {
+                    alert('Error saving marks: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'users/base3.html' %}
+{% block content %}
+
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    <h3 class="page-title">Add Assignment</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Assignment</a></li>
+    <li class="breadcrumb-item active">Upload</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+     {% include 'users/includes3/messages.html' %}
+
+    <div class="row">
+    <div class="col-sm-12">
+    <div class="card">
+    <div class="card-body">
+    <form method="post" action="{% url 'assignment_upload_teacher' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+    <div class="row">
+    <div class="col-12">
+    <h5 class="form-title"><span>Assignment Details</span></h5>
+    </div>
+    <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Assignment Name</label>
+    <input type="text" class="form-control" name="name">
+    </div>
+    </div>
+      <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Assignment Points</label>
+    <input type="text" class="form-control" name="points">
+    </div>
+    </div>
+        <div class="col-12 col-sm-6">
+    <div class="form-group">
+    <label>Description</label>
+    <input type="text" class="form-control" name="desc">
+    </div>
+    </div>
+      <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Due Date</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="due">
+                                       </div>
+                                    </div>
+                                 </div>
+        <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>File</label>
+                                       <input type="file" class="form-control" name="file">
+                                    </div>
+                                 </div>
+    <div class="col-12">
+    <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

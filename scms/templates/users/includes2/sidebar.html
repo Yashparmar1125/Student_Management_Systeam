@@ -1,0 +1,86 @@
+{% load static %}
+<div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+               <div id="sidebar-menu" class="sidebar-menu">
+                  <ul>
+                     <li class="menu-title">
+                        <span>Main Menu</span>
+                     </li>
+                     <li>
+                        <a href="{% url 'dashboard' %}"><i class="fas fa-user-graduate"></i> <span>Dashboard</span></a>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'subjects' %}">My Subjects</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-clipboard-check"></i> <span> Assignments</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'assignments_upcomming' %}">Upcomming</a></li>
+                           <li><a href="{% url 'assignments_submitted' %}">Completed</a></li>
+                           <li><a href="{% url 'assignments_past_due' %}">Past due</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fa fa-registered"></i> <span> Registration</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'register_student' %}">Register for Semester</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-book-open"></i> <span>Notes</span><span class="menu-arrow"></span> </a>
+                        <ul>
+                           <li><a href="{% url 'subject_notes' %}">Subject Notes</a></li>
+                           <li><a href="{% url 'practise_papers' %}">Practice Papers</a></li>
+                           <li><a href="{% url 'maintainence_error' %}">Vidio Lectures</a></li>
+                        </ul>
+                     </li>
+                     <li>
+                        <a href="{% url 'results_student' %}"><i class="fas fa-clipboard-list"></i> <span> Results</span></a>
+                     </li>
+                     <li class="menu-title">
+                        <span>Management</span>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'pay_fee' %}">Pay Fees</a></li>
+                           <li><a href="{% url 'view_reciepts' %}">View Recipts</a></li>
+                        </ul>
+                     </li>
+                     <li>
+                        <a href="{% url 'holidays_student' %}"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
+                     </li>
+
+                     <li>
+                        <a href="{% url 'examlist_student' %}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'events' %}"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'timetable_student' %}"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'maintainence_error' %}"><i class="fas fa-book"></i> <span>Library</span></a>
+                     </li>
+                     <li class="menu-title">
+                        <span>Others</span>
+                     </li>
+                     <li>
+                        <a href="{% url 'maintainence_error' %}"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'maintainence_error' %}"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'maintainence_error' %}"><i class="fas fa-bus"></i> <span>Transport</span></a>
+
+                        </ul>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
