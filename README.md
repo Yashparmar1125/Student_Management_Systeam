@@ -130,7 +130,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any queries or support, feel free to reach out:
 - **Author**: Yash Parmar
 - **GitHub**: [https://github.com/Yashparmar1125](https://github.com/Yashparmar1125)
-- **Email**: [yash@example.com](mailto:yash@example.com)
+- **Email**: [yash@example.com](mailto:yashparmar11y@gmail.com.com)
 
 We hope you enjoy using the Smart Classroom Management System!
 
