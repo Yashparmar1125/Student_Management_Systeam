@@ -7,6 +7,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
       <title>VIT - Dashboard</title>
       <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+       <link rel="manifest" href="{% static 'manifest.json' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
       <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
       <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
@@ -59,7 +60,18 @@
             </div>
       </div>
 
-
+    <script>
+        if ('serviceWorker' in navigator) {
+            // Wait for the page to load, then register the service worker
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+    </script>
       <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
       <script src="{% static 'assets/js/popper.min.js' %}"></script>
       <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
